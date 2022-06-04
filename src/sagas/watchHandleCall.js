@@ -4,12 +4,22 @@ import {
   handleCall,
   saveData,
   handleFetching,
+  resetQuery,
+  getPreviousQuery,
+  setPreviousQuery,
 } from "../callsSlice";
 
-export default function* watchHandleCall(par1, par2, action) {
+export default function* watchHandleCall(action) {
   try {
+    const previousQuery = yield select(getPreviousQuery);
+
+    if (previousQuery.length > 0 && previousQuery !== action.payload.value) {
+      //! reset attribute called for this query
+      //! this will help to use button again for just one time
+      yield put(resetQuery({ ...action.payload, called: false }));
+    }
+
     const queries = yield select(getQueries);
-    console.log("par1", par1, " par2", par2, " action", action);
 
     const queryInfo = queries[action.payload.value];
 
@@ -23,8 +33,11 @@ export default function* watchHandleCall(par1, par2, action) {
       const data = yield res.json();
       yield put(saveData(data));
       yield put(handleCall({ ...action.payload, called: true }));
+      yield put(setPreviousQuery({ previousQuery: action.payload.value }));
     }
 
     yield put(handleFetching({ fetching: false }));
-  } catch (error) {}
+  } catch (error) {
+    yield put(handleFetching({ fetching: false }));
+  }
 }
