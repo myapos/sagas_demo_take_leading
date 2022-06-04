@@ -16,6 +16,7 @@ function Button({ text, dummyBtn, queryParam, onClick }) {
           handleCall({
             value: queryParam,
             called: queries[queryParam] ? queries[queryParam].called : false,
+            fetching: true,
           })
         );
       }}
