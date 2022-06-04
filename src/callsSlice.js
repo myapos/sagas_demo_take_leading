@@ -16,17 +16,19 @@ export const calls = createSlice({
         ...state.queries,
         [action.payload.value]: restPayload,
       };
-      state.fetching = fetching;
     },
     saveData: (state, action) => {
       state.data = action.payload;
       state.fetching = false;
     },
+    handleFetching: (state, action) => {
+      state.fetching = action.payload.fetching;
+    },
   },
 });
 
 //! Action creators are generated for each case reducer function
-export const { handleCall, saveData } = calls.actions;
+export const { handleCall, saveData, handleFetching } = calls.actions;
 
 //! selectors
 export const getQueries = (state) => state.calls.queries;

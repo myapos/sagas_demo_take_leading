@@ -1,5 +1,10 @@
 import { call, put, select } from "redux-saga/effects";
-import { getQueries, handleCall, saveData } from "../callsSlice";
+import {
+  getQueries,
+  handleCall,
+  saveData,
+  handleFetching,
+} from "../callsSlice";
 
 export default function* watchHandleCall(par1, par2, action) {
   try {
@@ -9,15 +14,17 @@ export default function* watchHandleCall(par1, par2, action) {
     const queryInfo = queries[action.payload.value];
 
     if (!queryInfo.called) {
+      yield put(handleFetching({ fetching: true }));
+
       const res = yield call(
         fetch,
         `https://swapi.dev/api/people/${action.payload.value}`
       );
       const data = yield res.json();
       yield put(saveData(data));
-      yield put(
-        handleCall({ ...action.payload, called: true, fetching: false })
-      );
+      yield put(handleCall({ ...action.payload, called: true }));
     }
+
+    yield put(handleFetching({ fetching: false }));
   } catch (error) {}
 }

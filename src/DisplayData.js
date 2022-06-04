@@ -5,7 +5,6 @@ import { getData, getFetching } from "./callsSlice";
 function DisplayData(props) {
   const data = useSelector(getData);
   const fetching = useSelector(getFetching);
-  debugger;
   return (
     <div>
       {fetching ? "...fetching" : <pre>{JSON.stringify(data, null, 2)}</pre>}
