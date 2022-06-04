@@ -1,13 +1,11 @@
 // imports
-import { takeEvery, takeLeading } from "redux-saga/effects";
-import { startBunchOfCalls, aSingleAction } from "../counterSlice";
-import watchstartOfBunchOfCalls from "./watchstartOfBunchOfCalls";
-import watchASingleAction from "./watchASingleAction";
+import { takeEvery } from "redux-saga/effects";
+import { handleCall } from "../callsSlice";
+import watchHandleCall from "./watchHandleCall";
 
 // sagas
 function* rootSagas() {
-  yield takeEvery(startBunchOfCalls().type, watchstartOfBunchOfCalls);
-  yield takeLeading(aSingleAction().type, watchASingleAction);
+  yield takeEvery(handleCall().type, watchHandleCall, "par1", "par2");
 }
 
 // export
