@@ -1,11 +1,11 @@
 // imports
-import { takeLeading, takeEvery } from "redux-saga/effects";
-import { handleCall } from "../callsSlice";
-import watchHandleCall from "./watchHandleCall";
+import { takeLeading } from "redux-saga/effects";
+import { qyeryStart } from "../callsSlice";
+import watchQueryStart from "./watchQueryStart";
 
 // sagas
 function* rootSagas() {
-  yield takeLeading(handleCall().type, watchHandleCall);
+  yield takeLeading(qyeryStart().type, watchQueryStart);
 }
 
 // export

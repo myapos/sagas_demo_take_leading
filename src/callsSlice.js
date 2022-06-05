@@ -11,11 +11,20 @@ export const calls = createSlice({
   name: "calls",
   initialState,
   reducers: {
-    handleCall: (state, action) => {
-      const { fetching, ...restPayload } = action.payload;
+    qyeryStart: (state, action) => {
+      const { payload } = action;
+
       state.queries = {
         ...state.queries,
-        [action.payload.value]: restPayload,
+        [action.payload.value]: payload,
+      };
+    },
+    updateQuery: (state, action) => {
+      const { payload } = action;
+
+      state.queries = {
+        ...state.queries,
+        [action.payload.value]: payload,
       };
     },
     saveData: (state, action) => {
@@ -41,11 +50,12 @@ export const calls = createSlice({
 
 //! Action creators are generated for each case reducer function
 export const {
-  handleCall,
+  qyeryStart,
   saveData,
   handleFetching,
   resetQuery,
   setPreviousQuery,
+  updateQuery,
 } = calls.actions;
 
 //! selectors

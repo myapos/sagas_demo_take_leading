@@ -1,19 +1,24 @@
 import { call, put, select } from "redux-saga/effects";
 import {
   getQueries,
-  handleCall,
   saveData,
   handleFetching,
   resetQuery,
   getPreviousQuery,
   setPreviousQuery,
+  updateQuery,
 } from "../callsSlice";
 
-export default function* watchHandleCall(action) {
+export default function* watchQueryStart(action) {
   try {
     const previousQuery = yield select(getPreviousQuery);
 
-    if (previousQuery.length > 0 && previousQuery !== action.payload.value) {
+    const shouldResetQury =
+      previousQuery.length > 0 &&
+      previousQuery !== action.payload.value &&
+      action.payload.called;
+
+    if (shouldResetQury) {
       //! reset attribute called for this query
       //! this will help to use button again for just one time
       yield put(resetQuery({ ...action.payload, called: false }));
@@ -26,13 +31,18 @@ export default function* watchHandleCall(action) {
     if (!queryInfo.called) {
       yield put(handleFetching({ fetching: true }));
 
+      //! API call --> get some data from star wars api. The param of button is
+      //! used here
       const res = yield call(
         fetch,
         `https://swapi.dev/api/people/${action.payload.value}`
       );
+
       const data = yield res.json();
+
       yield put(saveData(data));
-      yield put(handleCall({ ...action.payload, called: true }));
+
+      yield put(updateQuery({ ...action.payload, called: true }));
       yield put(setPreviousQuery({ previousQuery: action.payload.value }));
     }
 

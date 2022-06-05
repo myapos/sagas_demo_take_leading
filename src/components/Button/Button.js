@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleCall, getQueries } from "../../callsSlice";
+import { qyeryStart, getQueries } from "../../callsSlice";
 
 function Button({ text, dummyBtn, queryParam, onClick }) {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ function Button({ text, dummyBtn, queryParam, onClick }) {
       id={dummyBtn}
       onClick={() => {
         dispatch(
-          handleCall({
+          qyeryStart({
             value: queryParam,
             called: queries[queryParam] ? queries[queryParam].called : false,
           })
